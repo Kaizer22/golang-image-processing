@@ -13,7 +13,7 @@ func Convolution(image image.Image, core [][]uint8) (result image.Image, err err
 	return
 }
 
-func GaussianFilter(image image.Image, coreSize int64, intensity int) (result image.Image, err error) {
+func GaussianFilter(image image.Image, coreSize uint32, intensity int) (result image.Image, err error) {
 	//TODO
 	return
 }

@@ -5,11 +5,14 @@ import (
 	"main/utils"
 )
 
-func ProportionalNearestNeighbor(sourceImage image.Image, scale float64) (interpolatedImage *image.RGBA, err error) {
-	return NearestNeighbor(sourceImage, scale, scale)
+type Interpolator interface {
 }
 
-func NearestNeighbor(sourceImage image.Image, scaleX float64, scaleY float64) (interpolatedImage *image.RGBA, err error) {
+func ProportionalNearestNeighbor(sourceImage image.Image, scale float64) (interpolatedImage *image.RGBA, err error) {
+	return NearestNeighborScaling(sourceImage, scale, scale)
+}
+
+func NearestNeighborScaling(sourceImage image.Image, scaleX float64, scaleY float64) (interpolatedImage *image.RGBA, err error) {
 	width, height := utils.GetSize(sourceImage)
 	targetWidth := int(float64(width) * scaleX)
 	targetHeight := int(float64(height) * scaleY)
@@ -21,6 +24,13 @@ func NearestNeighbor(sourceImage image.Image, scaleX float64, scaleY float64) (i
 		}
 	}
 	return
+}
+
+func NearestNeighbourToResolution(sourceImage image.Image, targetWidth int32, targetHeight int32) (interpolatedImage *image.RGBA, err error) {
+	width, height := utils.GetSize(sourceImage)
+	scaleX := float64(targetWidth) / float64(width)
+	scaleY := float64(targetHeight) / float64(height)
+	return NearestNeighborScaling(sourceImage, scaleX, scaleY)
 }
 
 func BilinearInterpolation() (interpolatedImage *image.RGBA, err error) {
